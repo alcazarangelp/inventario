@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/config/conexion.php';
+require_once __DIR__ . '/funciones.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: index.php');
@@ -15,7 +16,12 @@ if ($nombre === '' || $cantidad === '') {
     exit;
 }
 
-if (!is_numeric($cantidad)) {
+if (!validarNombre($nombre)) {
+    header('Location: index.php?estado=nombre_corto');
+    exit;
+}
+
+if (!validarCantidad($cantidad)) {
     header('Location: index.php?estado=cantidad_invalida');
     exit;
 }
