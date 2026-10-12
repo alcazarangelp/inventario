@@ -65,9 +65,15 @@ $estado = $_GET['estado'] ?? '';
                 </div>
             <?php endif; ?>
 
+            <?php if ($estado === 'nombre_corto'): ?>
+                <div class="mensaje error">
+                    El nombre del producto debe tener al menos 3 caracteres.
+                </div>
+            <?php endif; ?>
+
             <?php if ($estado === 'cantidad_invalida'): ?>
                 <div class="mensaje error">
-                    La cantidad debe ser un número.
+                    La cantidad debe ser un número mayor a 0.
                 </div>
             <?php endif; ?>
 
@@ -82,6 +88,7 @@ $estado = $_GET['estado'] ?? '';
                         id="nombre"
                         name="nombre"
                         maxlength="100"
+                        minlength="3"
                         placeholder="Ejemplo: Café"
                         required
                     >
@@ -96,6 +103,7 @@ $estado = $_GET['estado'] ?? '';
                         type="number"
                         id="cantidad"
                         name="cantidad"
+                        min="1"
                         placeholder="Ejemplo: 10"
                         required
                     >
