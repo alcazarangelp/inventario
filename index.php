@@ -1,7 +1,48 @@
 <?php
 
 require_once __DIR__ . '/config/conexion.php';
+require_once __DIR__ . '/funciones.php';
 
+$estado = $_GET['estado'] ?? '';
+
+// Procesar el formulario cuando se envía (las funciones se llaman aquí)
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nombre = trim($_POST['nombre'] ?? '');
+    $cantidad = $_POST['cantidad'] ?? '';
+
+    if ($nombre === '' || $cantidad === '') {
+        header('Location: index.php?estado=incompleto');
+        exit;
+    }
+
+    // Llamada a la función de validación de nombre
+    if (!validarNombre($nombre)) {
+        header('Location: index.php?estado=nombre_corto');
+        exit;
+    }
+
+    // Llamada a la función de validación de cantidad
+    if (!validarCantidad($cantidad)) {
+        header('Location: index.php?estado=cantidad_invalida');
+        exit;
+    }
+
+    // Si pasa las validaciones, guardar en la base de datos
+    $sentencia = $conexion->prepare(
+        'INSERT INTO productos (nombre, cantidad)
+         VALUES (:nombre, :cantidad)'
+    );
+
+    $sentencia->execute([
+        'nombre' => $nombre,
+        'cantidad' => (int) $cantidad
+    ]);
+
+    header('Location: index.php?estado=guardado');
+    exit;
+}
+
+// Consultar los productos para mostrarlos en la tabla
 $consulta = $conexion->query(
     'SELECT
         id,
@@ -13,8 +54,6 @@ $consulta = $conexion->query(
 );
 
 $productos = $consulta->fetchAll(PDO::FETCH_ASSOC);
-
-$estado = $_GET['estado'] ?? '';
 ?>
 
 <!DOCTYPE html>
@@ -77,7 +116,7 @@ $estado = $_GET['estado'] ?? '';
                 </div>
             <?php endif; ?>
 
-            <form action="guardar.php" method="POST">
+            <form action="index.php" method="POST">
                 <div class="campo">
                     <label for="nombre">
                         Nombre del producto
