@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/config/conexion.php';
-require_once __DIR__ . '/funciones.php';
+require_once __DIR__ . '/src/validaciones.php';
 
 $estado = $_GET['estado'] ?? '';
 
