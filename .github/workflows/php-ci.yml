@@ -10,23 +10,22 @@ permissions:
   contents: read
 
 jobs:
-    pruebas:
-      runs-on: ubuntu-latest
+  pruebas:
+    runs-on: ubuntu-latest
 
-      steps:
-        - name: Descargar código
-          uses: actions/checkout@v4
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v4
 
-        - name: Configurar php
-          uses: shivammathur/setup-php@v2
-          with:
-            php-version: '8.2'
+      - name: Configurar php
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
 
-        - name: Verificar sintaxís
-          run: |
-            php -l src/validaciones.php
-            php -l tests/test_validaciones.php
+      - name: Verificar sintaxís
+        run: |
+          php -l src/validaciones.php
+          php -l tests/test_validaciones.php
 
-        - name: Ejecutar Pruebas
-          run: php tests/test_validaciones.php   
-
+      - name: Ejecutar Pruebas
+        run: php tests/test_validaciones.php
